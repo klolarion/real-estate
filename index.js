@@ -12,10 +12,6 @@ const apiKey = process.env.API_KEY;
 app.use(express.static('public'));
 app.use(express.json());
 
-app.listen(port, () => {
-    console.log(`App listening on port ${port}`)
-})
-
 // 오픈 API 키와 기본 URL
 const KEY = apiKey; // 실제 API 키로 대체
 const TYPE = 'json';

@@ -123,8 +123,22 @@
 // 로컬 스토리지에서 장바구니 데이터를 불러오는 함수
 function loadCartFromLocalStorage() {
     const cartList = document.getElementById('cart-list');
-    const savedItems = JSON.parse(localStorage.getItem('관심목록')) || [];
+    let savedItems = JSON.parse(localStorage.getItem('관심목록')) || [];
 
+    // 빈 객체 제거: 빈 배열이어야 하는데 [{}] 형태로 들어가 있는 경우 빈 객체 필터링
+    savedItems = savedItems.filter(item => Object.keys(item).length > 0);
+
+    // 필터링된 결과를 다시 로컬 스토리지에 저장
+    localStorage.setItem('관심목록', JSON.stringify(savedItems));
+
+    // 로컬 스토리지에 저장된 데이터가 없거나 빈 배열인 경우
+    if (savedItems.length === 0) {
+        cartList.innerHTML = ''; // 기존 항목을 모두 제거하여 장바구니를 빈 상태로 유지
+        updateCartMessage(); // 장바구니 상태 업데이트
+        return;
+    }
+
+    // 저장된 항목이 있는 경우, 장바구니 목록 생성
     savedItems.forEach(item => {
         const li = createCartItemElement(item);
         cartList.appendChild(li);
@@ -145,9 +159,11 @@ function saveCartToLocalStorage() {
         };
     });
 
-    localStorage.setItem('관심목록', JSON.stringify(cartItems));
-}
+    // 빈 객체가 포함되지 않도록 필터링하여 저장
+    const filteredCartItems = cartItems.filter(item => Object.keys(item).length > 0);
 
+    localStorage.setItem('관심목록', JSON.stringify(filteredCartItems));
+}
 // 장바구니 아이템을 생성하는 함수
 function createCartItemElement(item) {
     const li = document.createElement('li');
