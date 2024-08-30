@@ -5,12 +5,19 @@ const path = require('path'); // 경로 모듈 추가
 const app = express();
 const port = 3000;
 
+// 예시: 환경 변수로부터 API 키를 가져오기
+const apiKey = process.env.API_KEY;
+
 // 요청을 처리하기 위해 정적 파일 제공
 app.use(express.static('public'));
 app.use(express.json());
 
+app.listen(port, () => {
+    console.log(`App listening on port ${port}`)
+})
+
 // 오픈 API 키와 기본 URL
-const KEY = ' { KEY }'; // 실제 API 키로 대체
+const KEY = apiKey; // 실제 API 키로 대체
 const TYPE = 'json';
 const SERVICE = 'tbLnOpendataRtmsV';
 const START_INDEX = 1;
